@@ -8,11 +8,11 @@
 		"super_mode": "before",
 		"joint_encoding": true,
 		"extra_stop_words": [
-			"of",
-			"about",
+			"'s",
+			"besides",
 			"the",
-			"any",
-			"for"
+			"in",
+			"of"
 		]
 	},
 	"model": {
@@ -28,39 +28,44 @@
 		"text_encoder": {
 			"type": "lstm",
 			"input_size": 100,
-			"hidden_size": 300,
+			"hidden_size": 200,
 			"bidirectional": true,
 			"num_layers": 1
 		},
-		"inp_drop_rate": 0.1,
-		"out_drop_rate": 0.1,
+		"inp_drop_rate": 0.2,
+		"out_drop_rate": 0.2,
 		"feature_sel": 115,
 		"loss_weights": [
-			0.3,
-			0.3,
-			0.4
+			0.1,
+			0.4,
+			0.5
 		],
 		"super_mode": "before",
-		"enable_training_log": true,
-		"unet_down_channel": 128
+		"unet_down_channel": 128,
+		"enable_training_log": false
 	},
 	"iterator": {
 		"type": "basic",
-		"batch_size": 12
+		"batch_size": 4
 	},
 	"validation_iterator": {
 		"type": "basic",
-		"batch_size": 12
+		"batch_size": 4
 	},
 	"trainer": {
 		"num_epochs": 100,
 		"cuda_device": 0,
 		"patience": 10,
-		"validation_metric": "+EM",
+		"validation_metric": "+BLEU4",
 		"optimizer": {
 			"type": "adam",
-			"lr": 2e-4,
-			"weight_decay": 1e-5
+			"lr": 2e-4
+		},
+		"learning_rate_scheduler": {
+			"type": "reduce_on_plateau",
+			"factor": 0.5,
+			"mode": "max",
+			"patience": 5
 		},
 		"num_serialized_models_to_keep": 10,
 		"should_log_learning_rate": true

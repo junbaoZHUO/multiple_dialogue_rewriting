@@ -7,13 +7,7 @@
 		"lazy": false,
 		"super_mode": "before",
 		"joint_encoding": true,
-		"extra_stop_words": [
-			"of",
-			"about",
-			"the",
-			"any",
-			"for"
-		]
+		"extra_stop_words": ["的", "是", "我", "了", "和"]
 	},
 	"model": {
 		"type": "rewrite",
@@ -28,29 +22,23 @@
 		"text_encoder": {
 			"type": "lstm",
 			"input_size": 100,
-			"hidden_size": 300,
+			"hidden_size": 200,
 			"bidirectional": true,
 			"num_layers": 1
 		},
-		"inp_drop_rate": 0.1,
-		"out_drop_rate": 0.1,
-		"feature_sel": 115,
-		"loss_weights": [
-			0.3,
-			0.3,
-			0.4
-		],
-		"super_mode": "before",
-		"enable_training_log": true,
-		"unet_down_channel": 128
+		"inp_drop_rate": 0.5,
+		"out_drop_rate": 0.5,
+		"feature_sel": 114,
+		"loss_weights": [0.25, 0.4, 0.35],
+		"super_mode": "before"
 	},
 	"iterator": {
 		"type": "basic",
-		"batch_size": 12
+		"batch_size": 24
 	},
 	"validation_iterator": {
 		"type": "basic",
-		"batch_size": 12
+		"batch_size": 24
 	},
 	"trainer": {
 		"num_epochs": 100,
@@ -59,8 +47,13 @@
 		"validation_metric": "+EM",
 		"optimizer": {
 			"type": "adam",
-			"lr": 2e-4,
-			"weight_decay": 1e-5
+			"lr": 2e-3
+		},
+		"learning_rate_scheduler": {
+			"type": "reduce_on_plateau",
+			"factor": 0.5,
+			"mode": "max",
+			"patience": 5
 		},
 		"num_serialized_models_to_keep": 10,
 		"should_log_learning_rate": true
